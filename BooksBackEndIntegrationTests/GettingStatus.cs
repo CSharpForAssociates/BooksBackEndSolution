@@ -13,6 +13,7 @@ namespace BooksBackEndIntegrationTests
 
         public GettingStatus(WebTestFixture fixture)
         {
+            
             _client = fixture.CreateClient();
         }
 
@@ -43,6 +44,7 @@ namespace BooksBackEndIntegrationTests
 
             Assert.Equal("Looks good, Boss!", content.message);
             Assert.Equal("Joe", content.checkedBy);
+            Assert.Equal(new DateTime(1969, 4, 20, 23, 59, 00), content.lastChecked);
         }
         // etc. etc.
     }
