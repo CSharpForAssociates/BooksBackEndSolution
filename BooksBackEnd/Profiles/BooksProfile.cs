@@ -14,6 +14,10 @@ namespace BooksBackEnd.Profiles
         {
             // Book => BooksResponseItem
             CreateMap<Book, BooksResponseItem>();
+            CreateMap<Book, GetBookDetailsResponse>();
+            CreateMap<BookCreateRequest, Book>()
+                .ForMember(dest => dest.IsInInventory, opt => opt.MapFrom((x) => true))
+                .ForMember(dest => dest.DateAdded, opt => opt.MapFrom((x) => DateTime.Now));
         }
     }
 }

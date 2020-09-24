@@ -29,6 +29,16 @@ namespace BooksBackEnd
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", builder =>
+                    builder.WithOrigins("http://localhost:4200")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials()
+                );
+            });
+
             services.AddControllers();
             // AddSingleton
             //services.AddSingleton<ISystemTime, SystemTime>(); // all requests will share a single instance of this thing.
@@ -56,6 +66,7 @@ namespace BooksBackEnd
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors("CorsPolicy");
             app.UseRouting();
 
             app.UseAuthorization();
