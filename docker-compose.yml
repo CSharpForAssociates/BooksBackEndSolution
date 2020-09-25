@@ -1,0 +1,15 @@
+version: "3.7"
+services:
+    api:
+        image: api:latest
+        depends_on: 
+            - sql
+        ports: 
+            - 80:80
+        environment:
+            - ConnectionStrings__books=server=sql;database=books;user=sa;password=TokyoJoe138!
+    sql:
+        image: jeffrygonzalez/bookssql
+        ports: 
+            - 1433:1433
+        

@@ -14,5 +14,6 @@ namespace BooksBackEnd.Domain
         public int NumberOfPages { get; set; }
         public DateTime DateAdded { get; set; }
         public Boolean IsInInventory { get; set; } 
+        public bool MarkedForSale { get; set; }
     }
 }

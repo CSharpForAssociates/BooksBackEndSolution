@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BooksBackEnd.Migrations
 {
     [DbContext(typeof(BooksDataContext))]
-    [Migration("20200924153745_Initial")]
+    [Migration("20200925180725_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,6 +36,9 @@ namespace BooksBackEnd.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsInInventory")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MarkedForSale")
                         .HasColumnType("bit");
 
                     b.Property<int>("NumberOfPages")

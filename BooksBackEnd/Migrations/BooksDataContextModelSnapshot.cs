@@ -36,6 +36,9 @@ namespace BooksBackEnd.Migrations
                     b.Property<bool>("IsInInventory")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("MarkedForSale")
+                        .HasColumnType("bit");
+
                     b.Property<int>("NumberOfPages")
                         .HasColumnType("int");
 
