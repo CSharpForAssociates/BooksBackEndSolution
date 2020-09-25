@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BooksBackEnd.Controllers
@@ -26,20 +27,48 @@ namespace BooksBackEnd.Controllers
             _mapperConfig = mapperConfig;
         }
 
+        [HttpPut("/books/{bookId:int}/title")]
+        public async Task<ActionResult> UpdateTitle([FromRoute] int bookId, [FromBody] string newTitle)
+        {
+            var book = await _context.Books.Where(b => b.Id == bookId && b.IsInInventory).SingleOrDefaultAsync();
+            if(book == null)
+            {
+                return NotFound();
+            } else
+            {
+                book.Title = newTitle; // no validation? probably bad.
+                await _context.SaveChangesAsync();
+                return NoContent();
+            }
+        }
+
+        [HttpDelete("/books/{bookId:int}")]
+        public async Task<ActionResult> RemoveABook(int bookId)
+        {
+            var bookToRemove = await _context.Books.SingleOrDefaultAsync(b => b.Id == bookId && b.IsInInventory);
+            if(bookToRemove != null)
+            {
+                bookToRemove.IsInInventory = false;
+                await _context.SaveChangesAsync();
+            }
+            return NoContent();
+        }
+
         [HttpPost("/books")]
         public async Task<ActionResult> AddABook([FromBody] BookCreateRequest bookToAdd)
         {
 
-
+            Thread.Sleep(4000);
             // "Post to a Collection" (books is the collection)
             // - "I'd like to add this representation as a new resource in your collection please"
             // 1. Validate the incoming representation. Does it look good? follow the rules? etc.
             //   - if NOT - send a 400 error. *maybe* tell them what they did wrong.
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             } else
             {
+                
                 // 2. Add it to the domain.
                 //   - turn our bookToAdd -> Book
                 var book = _mapper.Map<Book>(bookToAdd);
@@ -83,6 +112,7 @@ namespace BooksBackEnd.Controllers
         [HttpGet("/books")]
         public async Task<ActionResult> GetAllBooks()
         {
+            Thread.Sleep(3000); // TODO: Remove. Fake delay.
             var response = new GetAllBooksResponse();
             var books = await _context.Books
                 .Where(b=> b.IsInInventory == true)
